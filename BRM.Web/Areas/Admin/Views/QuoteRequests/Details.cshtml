@@ -1,0 +1,102 @@
+@model BRM.Web.Models.QuoteRequest
+@using BRM.Web.Models.Enums
+
+<div class="d-flex justify-content-between align-items-start mb-4">
+    <div>
+        <h1 class="h3 mb-1">Demande @Model.NumeroDemande</h1>
+        <p class="text-muted mb-0">Reçue le @Model.DateCreation.ToString("dd/MM/yyyy à HH:mm")</p>
+    </div>
+    <partial name="_StatusBadge" model="Model.Statut" />
+</div>
+
+@if (TempData["StatusUpdated"] != null)
+{
+    <div class="alert alert-success">@TempData["StatusUpdated"]</div>
+}
+
+<div class="row g-4">
+    <div class="col-lg-8">
+        <div class="admin-card mb-4">
+            <h2 class="h5 mb-3">Client</h2>
+            <dl class="row mb-0">
+                <dt class="col-sm-3">Nom</dt>
+                <dd class="col-sm-9">@Model.Prenom @Model.Nom</dd>
+                <dt class="col-sm-3">E-mail</dt>
+                <dd class="col-sm-9"><a href="mailto:@Model.Email">@Model.Email</a></dd>
+                <dt class="col-sm-3">Téléphone</dt>
+                <dd class="col-sm-9"><a href="tel:@Model.Telephone">@Model.Telephone</a></dd>
+                <dt class="col-sm-3">Adresse chantier</dt>
+                <dd class="col-sm-9">@Model.AdresseChantier, @Model.CodePostal @Model.Ville</dd>
+            </dl>
+        </div>
+
+        <div class="admin-card mb-4">
+            <h2 class="h5 mb-3">Projet</h2>
+            <dl class="row mb-0">
+                <dt class="col-sm-3">Prestation</dt>
+                <dd class="col-sm-9">@Model.Service?.Nom</dd>
+                @if (Model.Surface.HasValue)
+                {
+                    <dt class="col-sm-3">Surface</dt>
+                    <dd class="col-sm-9">@Model.Surface m²</dd>
+                }
+                @if (Model.Quantite.HasValue)
+                {
+                    <dt class="col-sm-3">Quantité</dt>
+                    <dd class="col-sm-9">@Model.Quantite</dd>
+                }
+                <dt class="col-sm-3">État actuel</dt>
+                <dd class="col-sm-9">@Model.EtatActuel</dd>
+                <dt class="col-sm-3">Finition souhaitée</dt>
+                <dd class="col-sm-9">@Model.NiveauFinition</dd>
+                @if (!string.IsNullOrEmpty(Model.DelaiSouhaite))
+                {
+                    <dt class="col-sm-3">Délai souhaité</dt>
+                    <dd class="col-sm-9">@Model.DelaiSouhaite</dd>
+                }
+                @if (!string.IsNullOrEmpty(Model.BudgetApproximatif))
+                {
+                    <dt class="col-sm-3">Budget indiqué</dt>
+                    <dd class="col-sm-9">@Model.BudgetApproximatif</dd>
+                }
+                <dt class="col-sm-3">Description</dt>
+                <dd class="col-sm-9">@Model.Description</dd>
+                <dt class="col-sm-3">Estimation calculée</dt>
+                <dd class="col-sm-9 fw-bold">@Model.EstimationBasse.ToString("N0") € &ndash; @Model.EstimationHaute.ToString("N0") € TTC</dd>
+            </dl>
+        </div>
+
+        @if (Model.QuotePhotos.Any())
+        {
+            <div class="admin-card">
+                <h2 class="h5 mb-3">Photos envoyées par le client</h2>
+                <div class="row g-3">
+                    @foreach (var photo in Model.QuotePhotos)
+                    {
+                        <div class="col-md-4">
+                            <a href="@photo.CheminFichier" target="_blank">
+                                <img src="@photo.CheminFichier" class="img-fluid rounded" alt="Photo du chantier" />
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="col-lg-4">
+        <div class="admin-card">
+            <h2 class="h5 mb-3">Statut de la demande</h2>
+            <form asp-action="ChangerStatut" method="post">
+                <input type="hidden" name="id" value="@Model.Id" />
+                <select name="statut" class="form-select mb-3">
+                    @foreach (QuoteStatus statut in Enum.GetValues<QuoteStatus>())
+                    {
+                        <option value="@((int)statut)" selected="@(statut == Model.Statut ? "selected" : null)">@statut</option>
+                    }
+                </select>
+                <button type="submit" class="btn btn-brand-navy w-100">Mettre à jour le statut</button>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,18 @@
+@model BRM.Web.Models.Enums.QuoteStatus
+
+@{
+    var (texte, classe) = Model switch
+    {
+        QuoteStatus.Nouvelle => ("Nouvelle", "bg-primary"),
+        QuoteStatus.EnEtude => ("En étude", "bg-info text-dark"),
+        QuoteStatus.ClientContacte => ("Client contacté", "bg-secondary"),
+        QuoteStatus.VisitePlanifiee => ("Visite planifiée", "bg-warning text-dark"),
+        QuoteStatus.VisiteEffectuee => ("Visite effectuée", "bg-warning text-dark"),
+        QuoteStatus.DevisDefinitifEnvoye => ("Devis définitif envoyé", "bg-info text-dark"),
+        QuoteStatus.Accepte => ("Accepté", "bg-success"),
+        QuoteStatus.Refuse => ("Refusé", "bg-danger"),
+        QuoteStatus.Archive => ("Archivé", "bg-dark"),
+        _ => (Model.ToString(), "bg-secondary")
+    };
+}
+<span class="badge badge-status @classe">@texte</span>

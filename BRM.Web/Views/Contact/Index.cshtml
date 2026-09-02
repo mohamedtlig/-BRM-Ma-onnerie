@@ -1,0 +1,58 @@
+@model BRM.Web.ViewModels.Contact.ContactFormViewModel
+
+<section class="section">
+    <div class="container" style="max-width: 700px;">
+        <p class="section-title-eyebrow">Contact</p>
+        <h1 class="section-title">Une question ? Contactez-nous</h1>
+        <p class="text-muted mb-4">
+            Pour une estimation chiffrée de vos travaux, utilisez plutôt notre
+            <a asp-controller="Quote" asp-action="Create">formulaire de demande de devis</a>.
+            Pour toute autre question, ce formulaire nous permet de vous répondre rapidement.
+        </p>
+
+        @if (TempData["ContactSuccess"] != null)
+        {
+            <div class="alert alert-success">@TempData["ContactSuccess"]</div>
+        }
+
+        <div class="form-card">
+            <form asp-action="Index" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <div class="mb-3">
+                    <label asp-for="Nom" class="form-label"></label>
+                    <input asp-for="Nom" class="form-control" />
+                    <span asp-validation-for="Nom" class="text-danger small"></span>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Email" class="form-label"></label>
+                        <input asp-for="Email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Telephone" class="form-label"></label>
+                        <input asp-for="Telephone" class="form-control" />
+                        <span asp-validation-for="Telephone" class="text-danger small"></span>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Message" class="form-label"></label>
+                    <textarea asp-for="Message" class="form-control" rows="5"></textarea>
+                    <span asp-validation-for="Message" class="text-danger small"></span>
+                </div>
+                <div class="form-check mb-4">
+                    <input asp-for="ConsentementRGPD" class="form-check-input" />
+                    <label asp-for="ConsentementRGPD" class="form-check-label small"></label>
+                    <span asp-validation-for="ConsentementRGPD" class="text-danger small d-block"></span>
+                </div>
+
+                <button type="submit" class="btn btn-brand-primary">Envoyer le message</button>
+            </form>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

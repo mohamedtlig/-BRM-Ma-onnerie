@@ -1,0 +1,76 @@
+@model BRM.Web.ViewModels.Admin.DashboardViewModel
+
+<h1 class="h3 mb-4">Tableau de bord</h1>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="stat-tile">
+            <div class="value">@Model.NouvellesDemandes</div>
+            <div class="label">Nouvelles demandes</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-tile">
+            <div class="value">@Model.DemandesATraiter</div>
+            <div class="label">Demandes à traiter</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-tile">
+            <div class="value">@Model.VisitesPrevues</div>
+            <div class="label">Visites prévues</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-tile">
+            <div class="value">@Model.DevisAcceptes</div>
+            <div class="label">Devis acceptés</div>
+        </div>
+    </div>
+</div>
+
+<div class="admin-card">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="h5 mb-0">Dernières demandes</h2>
+        <a asp-controller="QuoteRequests" asp-action="Index" class="small fw-semibold">Voir toutes les demandes &rarr;</a>
+    </div>
+
+    @if (!Model.DernieresDemandes.Any())
+    {
+        <p class="text-muted mb-0">Aucune demande pour le moment.</p>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-admin align-middle">
+                <thead>
+                    <tr>
+                        <th>N°</th>
+                        <th>Client</th>
+                        <th>Prestation</th>
+                        <th>Statut</th>
+                        <th>Date</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var demande in Model.DernieresDemandes)
+                    {
+                        <tr>
+                            <td>@demande.NumeroDemande</td>
+                            <td>@demande.Prenom @demande.Nom</td>
+                            <td>@demande.Service?.Nom</td>
+                            <td><partial name="_StatusBadge" model="demande.Statut" /></td>
+                            <td>@demande.DateCreation.ToString("dd/MM/yyyy")</td>
+                            <td>
+                                <a asp-controller="QuoteRequests" asp-action="Details" asp-route-id="@demande.Id" class="btn btn-sm btn-outline-secondary">
+                                    Voir
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

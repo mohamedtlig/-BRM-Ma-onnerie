@@ -1,0 +1,82 @@
+@model BRM.Web.ViewModels.Quote.QuoteResultViewModel
+
+<section class="section" style="max-width: 800px; margin: 0 auto;">
+    <div class="container">
+        <div class="text-center mb-4">
+            <i class="bi bi-check-circle-fill text-success" style="font-size: 3rem;"></i>
+            <h1 class="section-title mt-3">Votre demande a bien été enregistrée</h1>
+            <p class="text-muted">Numéro de demande : <strong>@Model.NumeroDemande</strong></p>
+        </div>
+
+        @if (TempData["QuoteEmailSuccess"] != null)
+        {
+            <div class="alert alert-success">@TempData["QuoteEmailSuccess"]</div>
+        }
+        @if (TempData["QuoteEmailError"] != null)
+        {
+            <div class="alert alert-danger">@TempData["QuoteEmailError"]</div>
+        }
+
+        @if (Model.EmailEnvoye)
+        {
+            <div class="alert alert-info">
+                <i class="bi bi-envelope-check me-1"></i>
+                Un e-mail récapitulatif avec votre estimation (PDF joint) vient de vous être envoyé à
+                <strong>@Model.Email</strong>.
+            </div>
+        }
+
+        <div class="estimation-box mb-4">
+            <p class="text-uppercase small fw-bold text-muted mb-1">Estimation indicative</p>
+            <div class="amount">@Model.EstimationBasse.ToString("N0") € &ndash; @Model.EstimationHaute.ToString("N0") € TTC</div>
+        </div>
+
+        <div class="disclaimer-box mb-4">
+            Cette estimation est fournie à titre indicatif sur la base des informations renseignées.
+            Elle ne constitue pas un devis contractuel. <strong>Une visite sur chantier est nécessaire
+            afin d'établir le devis définitif.</strong>
+        </div>
+
+        <div class="form-card mb-4">
+            <h2 class="h5 mb-3">Récapitulatif de votre demande</h2>
+            <dl class="row mb-0">
+                <dt class="col-sm-4">Client</dt>
+                <dd class="col-sm-8">@Model.Prenom @Model.Nom</dd>
+
+                <dt class="col-sm-4">Coordonnées</dt>
+                <dd class="col-sm-8">@Model.Email &mdash; @Model.Telephone</dd>
+
+                <dt class="col-sm-4">Adresse du chantier</dt>
+                <dd class="col-sm-8">@Model.AdresseChantier, @Model.CodePostal @Model.Ville</dd>
+
+                <dt class="col-sm-4">Type de travaux</dt>
+                <dd class="col-sm-8">@Model.TypeTravaux</dd>
+
+                @if (Model.Surface.HasValue)
+                {
+                    <dt class="col-sm-4">Surface approximative</dt>
+                    <dd class="col-sm-8">@Model.Surface m²</dd>
+                }
+
+                <dt class="col-sm-4">Description</dt>
+                <dd class="col-sm-8">@Model.Description</dd>
+
+                <dt class="col-sm-4">Date de la demande</dt>
+                <dd class="col-sm-8">@Model.DateCreation.ToString("dd/MM/yyyy à HH:mm")</dd>
+            </dl>
+        </div>
+
+        @if (!Model.EmailEnvoye)
+        {
+            <form asp-action="RenvoyerEmail" method="post" class="text-center mb-4">
+                <input type="hidden" name="id" value="@Model.QuoteRequestId" />
+                <button type="submit" class="btn btn-brand-primary">Recevoir mon estimation par e-mail</button>
+            </form>
+        }
+
+        <div class="text-center text-muted">
+            <p>Notre équipe va étudier votre demande et vous recontactera pour organiser une visite du chantier.</p>
+            <a asp-controller="Home" asp-action="Index" class="fw-semibold">Retour à l'accueil</a>
+        </div>
+    </div>
+</section>

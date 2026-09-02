@@ -1,0 +1,196 @@
+@model BRM.Web.ViewModels.Home.HomeIndexViewModel
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+
+@section Head {
+    <script type="application/ld+json">
+    {
+        "@@context": "https://schema.org",
+        "@@type": "HomeAndConstructionBusiness",
+        "name": "@(Configuration["CompanyInfo:Name"] ?? "BRM")",
+        "description": "Entreprise de maçonnerie générale à La Garde, intervenant à Toulon et dans le Var.",
+        "address": {
+            "@@type": "PostalAddress",
+            "addressLocality": "La Garde",
+            "addressRegion": "Provence-Alpes-Côte d'Azur",
+            "addressCountry": "FR"
+        },
+        "areaServed": ["La Garde", "Toulon", "Var"],
+        "email": "@(Configuration["CompanyInfo:Email"] ?? "")"
+    }
+    </script>
+}
+
+<section class="hero">
+    <div class="container position-relative">
+        <div class="row align-items-center">
+            <div class="col-lg-7">
+                <span class="hero-badge">Maçonnerie générale &mdash; La Garde / Toulon</span>
+                <h1>BRM, votre entreprise de maçonnerie à La Garde</h1>
+                <p class="lead">
+                    Construction, rénovation, murs, dalles, façades, terrasses... BRM réalise vos travaux
+                    de maçonnerie à La Garde, Toulon et dans le Var.
+                </p>
+                <div class="d-flex flex-wrap gap-3 mt-4">
+                    <a class="btn btn-brand-primary btn-lg" asp-controller="Quote" asp-action="Create">
+                        Demander un devis
+                    </a>
+                    <a class="btn btn-brand-outline btn-lg" asp-controller="Projects" asp-action="Index">
+                        Voir nos réalisations
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container" style="max-width: 800px;">
+        <p class="section-title-eyebrow text-center">Qui sommes-nous</p>
+        <h2 class="section-title text-center">Une entreprise de maçonnerie générale dans le Var</h2>
+        <p class="text-muted text-center">
+            BRM est une entreprise de maçonnerie générale basée à La Garde, intervenant à Toulon et dans
+            son agglomération. Nous accompagnons particuliers et professionnels sur leurs projets de
+            construction, rénovation et aménagement maçonné.
+        </p>
+        <div class="text-center">
+            <a asp-controller="Home" asp-action="About" class="fw-semibold">En savoir plus sur BRM <i class="bi bi-arrow-right"></i></a>
+        </div>
+    </div>
+</section>
+
+@if (Model.ServicesPhares.Any())
+{
+    <section class="section section-alt">
+        <div class="container">
+            <p class="section-title-eyebrow text-center">Nos prestations</p>
+            <h2 class="section-title text-center mb-5">Nos principaux services</h2>
+            <div class="row g-4">
+                @foreach (var service in Model.ServicesPhares)
+                {
+                    <div class="col-md-6 col-lg-4">
+                        <div class="service-card">
+                            @if (!string.IsNullOrEmpty(service.ImagePath))
+                            {
+                                <img src="@service.ImagePath" class="service-card__img" alt="@service.Nom" loading="lazy" />
+                            }
+                            else
+                            {
+                                <div class="service-card__img d-flex align-items-center justify-content-center" style="background:var(--brm-navy);">
+                                    <i class="bi bi-bricks fs-1 text-white-50"></i>
+                                </div>
+                            }
+                            <div class="service-card__body">
+                                <h3 class="h5">@service.Nom</h3>
+                                <p class="text-muted small mb-0">@service.Description</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="text-center mt-4">
+                <a class="btn btn-brand-navy" asp-controller="Services" asp-action="Index">Voir tous nos services</a>
+            </div>
+        </div>
+    </section>
+}
+
+<section class="section">
+    <div class="container">
+        <p class="section-title-eyebrow text-center">Notre méthode</p>
+        <h2 class="section-title text-center mb-5">Comment ça marche ?</h2>
+        <div class="row g-4">
+            <div class="col-md-4 col-lg">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <h3 class="h6">Décrivez votre projet</h3>
+                    <p class="small text-muted">Remplissez notre formulaire de demande de devis en ligne.</p>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg">
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <h3 class="h6">Recevez une estimation indicative</h3>
+                    <p class="small text-muted">Une fourchette de prix vous est communiquée immédiatement.</p>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg">
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <h3 class="h6">BRM étudie votre demande</h3>
+                    <p class="small text-muted">Notre équipe analyse le détail de votre projet.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg">
+                <div class="step-card">
+                    <div class="step-number">4</div>
+                    <h3 class="h6">Visite du chantier</h3>
+                    <p class="small text-muted">Une visite est organisée pour affiner le projet.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg">
+                <div class="step-card">
+                    <div class="step-number">5</div>
+                    <h3 class="h6">Devis définitif</h3>
+                    <p class="small text-muted">Un devis précis et définitif vous est ensuite établi.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@if (Model.RealisationsRecentes.Any())
+{
+    <section class="section section-alt">
+        <div class="container">
+            <p class="section-title-eyebrow text-center">Portfolio</p>
+            <h2 class="section-title text-center mb-5">Réalisations récentes</h2>
+            <div class="row g-4">
+                @foreach (var project in Model.RealisationsRecentes)
+                {
+                    <div class="col-md-4">
+                        <a class="project-card" asp-controller="Projects" asp-action="Index">
+                            @if (!string.IsNullOrEmpty(project.PhotoPrincipale))
+                            {
+                                <img src="@project.PhotoPrincipale" alt="@project.Titre" loading="lazy" />
+                            }
+                            else
+                            {
+                                <div style="height:260px;background:#dfe2e6;"></div>
+                            }
+                            <div class="project-card__overlay">
+                                <div>
+                                    <h5>@project.Titre</h5>
+                                    <small>@project.TypeTravaux &mdash; @project.Ville</small>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                }
+            </div>
+            <div class="text-center mt-4">
+                <a class="btn btn-brand-navy" asp-controller="Projects" asp-action="Index">Voir toutes nos réalisations</a>
+            </div>
+        </div>
+    </section>
+}
+
+<partial name="_QuickContactForm" model="new BRM.Web.ViewModels.Contact.ContactFormViewModel()" />
+
+<section class="section">
+    <div class="container" style="max-width: 700px;">
+        <p class="section-title-eyebrow text-center">Zone d'intervention</p>
+        <h2 class="section-title text-center mb-3">Où intervenons-nous ?</h2>
+        <p class="text-muted text-center">
+            BRM intervient principalement à La Garde et Toulon, ainsi que dans les communes de
+            l'agglomération toulonnaise, dans le département du Var.
+        </p>
+    </div>
+</section>
+
+<section class="cta-final text-center">
+    <div class="container">
+        <h2 class="text-white mb-3">Prêt à démarrer votre projet ?</h2>
+        <p class="mb-4">Obtenez dès maintenant une première estimation indicative de vos travaux.</p>
+        <a class="btn btn-brand-navy btn-lg" asp-controller="Quote" asp-action="Create">Demander un devis</a>
+    </div>
+</section>

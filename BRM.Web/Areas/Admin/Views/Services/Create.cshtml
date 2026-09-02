@@ -1,0 +1,13 @@
+@model BRM.Web.ViewModels.Admin.ServiceEditViewModel
+
+<h1 class="h3 mb-4">Nouveau service</h1>
+
+<div class="admin-card">
+    <form asp-action="Create" method="post" enctype="multipart/form-data">
+        <partial name="_Form" />
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

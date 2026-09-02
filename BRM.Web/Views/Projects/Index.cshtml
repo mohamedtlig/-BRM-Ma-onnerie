@@ -1,0 +1,70 @@
+@model BRM.Web.ViewModels.Projects.ProjectListViewModel
+
+<section class="hero py-5">
+    <div class="container text-center">
+        <p class="hero-badge">Portfolio</p>
+        <h1>Nos réalisations</h1>
+        <p class="lead mx-auto">
+            Un aperçu de chantiers menés par BRM à La Garde, Toulon et dans le Var.
+        </p>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        @if (Model.TypesDisponibles.Any())
+        {
+            <div class="d-flex flex-wrap gap-2 justify-content-center mb-5">
+                <a class="btn btn-sm @(Model.TypeSelectionne == null ? "btn-brand-navy" : "btn-outline-secondary")"
+                   asp-action="Index">Tous</a>
+                @foreach (var type in Model.TypesDisponibles)
+                {
+                    <a class="btn btn-sm @(Model.TypeSelectionne == type ? "btn-brand-navy" : "btn-outline-secondary")"
+                       asp-action="Index" asp-route-type="@type">@type</a>
+                }
+            </div>
+        }
+
+        @if (!Model.Realisations.Any())
+        {
+            <p class="text-muted text-center">Aucune réalisation publiée pour le moment.</p>
+        }
+        else
+        {
+            <div class="row g-4">
+                @foreach (var project in Model.Realisations)
+                {
+                    <div class="col-md-6 col-lg-4">
+                        <div class="project-card">
+                            @if (!string.IsNullOrEmpty(project.PhotoPrincipale))
+                            {
+                                <img src="@project.PhotoPrincipale" alt="@project.Titre" loading="lazy" />
+                            }
+                            else
+                            {
+                                <div style="height:260px;background:#dfe2e6;"></div>
+                            }
+                            <div class="project-card__overlay">
+                                <div>
+                                    @if (project.EstAvantApres)
+                                    {
+                                        <span class="badge bg-brand-orange" style="background:var(--brm-orange);">Avant / Après</span>
+                                    }
+                                    <h5>@project.Titre</h5>
+                                    <small>@project.TypeTravaux &mdash; @project.Ville</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</section>
+
+<section class="cta-final text-center">
+    <div class="container">
+        <h2 class="text-white mb-3">Votre projet pourrait être le prochain</h2>
+        <a class="btn btn-brand-navy btn-lg" asp-controller="Quote" asp-action="Create">Demander un devis</a>
+    </div>
+</section>

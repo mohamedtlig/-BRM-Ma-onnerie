@@ -1,0 +1,25 @@
+# Build artifacts
+bin/
+obj/
+out/
+
+# IDE
+.vs/
+.vscode/
+*.user
+
+# Secrets — ne jamais committer
+appsettings.*.local.json
+*.pfx
+
+# Fichiers uploadés par les utilisateurs (contenu, pas le dossier)
+BRM.Web/wwwroot/uploads/**
+!BRM.Web/wwwroot/uploads/.gitkeep
+!BRM.Web/wwwroot/uploads/**/.gitkeep
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db

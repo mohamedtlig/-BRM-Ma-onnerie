@@ -1,0 +1,70 @@
+@model BRM.Web.ViewModels.Admin.ServiceEditViewModel
+
+<div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+<h2 class="h6 text-uppercase text-muted mb-3">Informations générales</h2>
+<div class="row">
+    <div class="col-md-6 mb-3">
+        <label asp-for="Nom" class="form-label"></label>
+        <input asp-for="Nom" class="form-control" />
+        <span asp-validation-for="Nom" class="text-danger small"></span>
+    </div>
+    <div class="col-md-3 mb-3">
+        <label asp-for="Unite" class="form-label"></label>
+        <input asp-for="Unite" class="form-control" />
+        <span asp-validation-for="Unite" class="text-danger small"></span>
+    </div>
+    <div class="col-md-3 mb-3">
+        <label asp-for="Ordre" class="form-label"></label>
+        <input asp-for="Ordre" class="form-control" type="number" />
+    </div>
+    <div class="col-12 mb-3">
+        <label asp-for="Description" class="form-label"></label>
+        <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+        <span asp-validation-for="Description" class="text-danger small"></span>
+    </div>
+    <div class="col-md-6 mb-3">
+        <label asp-for="Image" class="form-label"></label>
+        <input asp-for="Image" type="file" class="form-control" accept="image/jpeg,image/png,image/webp" />
+        @if (!string.IsNullOrEmpty(Model.ImagePath))
+        {
+            <img src="@Model.ImagePath" class="mt-2 rounded" style="height:80px;" alt="" />
+        }
+    </div>
+    <div class="col-md-6 mb-3 d-flex align-items-end">
+        <div class="form-check">
+            <input asp-for="Actif" class="form-check-input" />
+            <label asp-for="Actif" class="form-check-label"></label>
+        </div>
+    </div>
+</div>
+
+<hr class="my-4" />
+
+<h2 class="h6 text-uppercase text-muted mb-3">Tarification indicative (moteur d'estimation)</h2>
+<div class="row">
+    <div class="col-md-3 mb-3">
+        <label asp-for="PrixBase" class="form-label"></label>
+        <input asp-for="PrixBase" class="form-control" type="number" step="0.01" />
+    </div>
+    <div class="col-md-3 mb-3">
+        <label asp-for="PrixParUnite" class="form-label"></label>
+        <input asp-for="PrixParUnite" class="form-control" type="number" step="0.01" />
+    </div>
+    <div class="col-md-3 mb-3">
+        <label asp-for="CoefficientComplexite" class="form-label"></label>
+        <input asp-for="CoefficientComplexite" class="form-control" type="number" step="0.01" />
+    </div>
+    <div class="col-md-3 mb-3">
+        <label asp-for="FraisFixes" class="form-label"></label>
+        <input asp-for="FraisFixes" class="form-control" type="number" step="0.01" />
+    </div>
+    <div class="col-md-4 mb-3">
+        <label asp-for="MargeFourchette" class="form-label"></label>
+        <input asp-for="MargeFourchette" class="form-control" type="number" step="0.01" min="0" max="1" />
+        <div class="form-text">Ex : 0.15 = fourchette basse/haute à ±15 % autour du montant calculé.</div>
+    </div>
+</div>
+
+<button type="submit" class="btn btn-brand-primary">Enregistrer</button>
+<a asp-action="Index" class="btn btn-outline-secondary">Annuler</a>

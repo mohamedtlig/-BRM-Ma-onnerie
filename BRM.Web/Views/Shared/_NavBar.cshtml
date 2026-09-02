@@ -1,0 +1,51 @@
+<header>
+    <div class="topbar d-none d-md-block">
+        <div class="container d-flex justify-content-between align-items-center py-1">
+            <span><i class="bi bi-geo-alt"></i> La Garde / Toulon &mdash; Var (83)</span>
+            <span class="d-flex align-items-center gap-3">
+                <span>Zone d'intervention : Toulon et son agglomération</span>
+                <a asp-area="Admin" asp-controller="Account" asp-action="Login" class="topbar-admin-link">
+                    <i class="bi bi-box-arrow-in-right"></i> Espace pro
+                </a>
+            </span>
+        </div>
+    </div>
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm py-3">
+        <div class="container">
+            <a class="navbar-brand fw-bold" asp-area="" asp-controller="Home" asp-action="Index">
+                BRM <span class="brand-sub">Maçonnerie générale</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"
+                    aria-controls="mainNav" aria-expanded="false" aria-label="Ouvrir la navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mainNav">
+                <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Home" asp-action="Index">Accueil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Services" asp-action="Index">Nos services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Projects" asp-action="Index">Nos réalisations</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Home" asp-action="About">À propos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Contact" asp-action="Index">Contact</a>
+                    </li>
+                    <li class="nav-item ms-lg-2">
+                        <a class="btn btn-brand-primary" asp-controller="Quote" asp-action="Create">Demander un devis</a>
+                    </li>
+                    <li class="nav-item d-lg-none mt-2">
+                        <a class="nav-link small text-muted" asp-area="Admin" asp-controller="Account" asp-action="Login">
+                            <i class="bi bi-box-arrow-in-right"></i> Espace professionnel
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>

@@ -1,0 +1,51 @@
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+<footer class="footer-brm mt-5">
+    <div class="container py-5">
+        <div class="row g-4">
+            <div class="col-lg-4">
+                <h5 class="text-white fw-bold mb-3">BRM</h5>
+                <p class="text-light-muted">
+                    Entreprise de maçonnerie générale basée à La Garde, intervenant à Toulon et dans
+                    son agglomération (Var).
+                </p>
+            </div>
+            <div class="col-lg-2 col-md-4">
+                <h6 class="text-white mb-3">Le site</h6>
+                <ul class="list-unstyled footer-links">
+                    <li><a asp-controller="Home" asp-action="Index">Accueil</a></li>
+                    <li><a asp-controller="Services" asp-action="Index">Nos services</a></li>
+                    <li><a asp-controller="Projects" asp-action="Index">Nos réalisations</a></li>
+                    <li><a asp-controller="Home" asp-action="About">À propos</a></li>
+                    <li><a asp-controller="Contact" asp-action="Index">Contact</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-3 col-md-4">
+                <h6 class="text-white mb-3">Informations légales</h6>
+                <ul class="list-unstyled footer-links">
+                    <li><a asp-controller="Legal" asp-action="MentionsLegales">Mentions légales</a></li>
+                    <li><a asp-controller="Legal" asp-action="Confidentialite">Politique de confidentialité</a></li>
+                    <li><a asp-area="Admin" asp-controller="Account" asp-action="Login">Espace professionnel</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-3 col-md-4">
+                <h6 class="text-white mb-3">Contact</h6>
+                <ul class="list-unstyled footer-links">
+                    <li><i class="bi bi-geo-alt me-1"></i>La Garde / Toulon (83)</li>
+                    <li><i class="bi bi-envelope me-1"></i>@Configuration["CompanyInfo:Email"]</li>
+                    @{
+                        var phone = Configuration["CompanyInfo:Phone"];
+                    }
+                    @if (!string.IsNullOrWhiteSpace(phone))
+                    {
+                        <li><i class="bi bi-telephone me-1"></i>@phone</li>
+                    }
+                </ul>
+            </div>
+        </div>
+        <hr class="border-secondary my-4" />
+        <div class="d-flex flex-column flex-md-row justify-content-between small text-light-muted">
+            <span>&copy; @DateTime.Now.Year BRM &mdash; Maçonnerie générale &mdash; Tous droits réservés.</span>
+            <span>Site réalisé pour BRM &mdash; La Garde, Var</span>
+        </div>
+    </div>
+</footer>

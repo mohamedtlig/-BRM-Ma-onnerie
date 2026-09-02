@@ -1,0 +1,75 @@
+@model BRM.Web.ViewModels.Admin.ProjectEditViewModel
+
+<div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+<div class="row">
+    <div class="col-md-6 mb-3">
+        <label asp-for="Titre" class="form-label"></label>
+        <input asp-for="Titre" class="form-control" />
+        <span asp-validation-for="Titre" class="text-danger small"></span>
+    </div>
+    <div class="col-md-3 mb-3">
+        <label asp-for="TypeTravaux" class="form-label"></label>
+        <input asp-for="TypeTravaux" class="form-control" placeholder="Ex : Terrasse, Rénovation..." />
+        <span asp-validation-for="TypeTravaux" class="text-danger small"></span>
+    </div>
+    <div class="col-md-3 mb-3">
+        <label asp-for="Ville" class="form-label"></label>
+        <input asp-for="Ville" class="form-control" />
+        <span asp-validation-for="Ville" class="text-danger small"></span>
+    </div>
+    <div class="col-12 mb-3">
+        <label asp-for="Description" class="form-label"></label>
+        <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+        <span asp-validation-for="Description" class="text-danger small"></span>
+    </div>
+    <div class="col-md-4 mb-3">
+        <label asp-for="Date" class="form-label"></label>
+        <input asp-for="Date" class="form-control" type="date" />
+    </div>
+    <div class="col-md-4 mb-3 d-flex align-items-end">
+        <div class="form-check">
+            <input asp-for="EstAvantApres" class="form-check-input" />
+            <label asp-for="EstAvantApres" class="form-check-label"></label>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3 d-flex align-items-end">
+        <div class="form-check">
+            <input asp-for="Publie" class="form-check-input" />
+            <label asp-for="Publie" class="form-check-label"></label>
+        </div>
+    </div>
+
+    <div class="col-md-6 mb-3">
+        <label asp-for="PhotoPrincipale" class="form-label"></label>
+        <input asp-for="PhotoPrincipale" type="file" class="form-control" accept="image/jpeg,image/png,image/webp" />
+        @if (!string.IsNullOrEmpty(Model.PhotoPrincipaleExistante))
+        {
+            <img src="@Model.PhotoPrincipaleExistante" class="mt-2 rounded" style="height:80px;" alt="" />
+        }
+    </div>
+    <div class="col-md-6 mb-3">
+        <label asp-for="PhotosSupplementaires" class="form-label"></label>
+        <input type="file" name="PhotosSupplementaires" class="form-control" multiple accept="image/jpeg,image/png,image/webp" />
+    </div>
+</div>
+
+@if (ViewData["PhotosExistantes"] is List<BRM.Web.Models.ProjectPhoto> photos && photos.Any())
+{
+    <h2 class="h6 text-uppercase text-muted mt-4 mb-3">Photos existantes</h2>
+    <div class="row g-2 mb-3">
+        @foreach (var photo in photos)
+        {
+            <div class="col-auto text-center">
+                <img src="@photo.CheminFichier" style="width:100px;height:100px;object-fit:cover;" class="rounded d-block mb-1" alt="" />
+                <form asp-action="DeletePhoto" asp-route-id="@photo.Id" asp-route-projectId="@Model.Id" method="post"
+                      onsubmit="return confirm('Supprimer cette photo ?');">
+                    <button type="submit" class="btn btn-sm btn-outline-danger">Supprimer</button>
+                </form>
+            </div>
+        }
+    </div>
+}
+
+<button type="submit" class="btn btn-brand-primary">Enregistrer</button>
+<a asp-action="Index" class="btn btn-outline-secondary">Annuler</a>

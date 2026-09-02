@@ -1,0 +1,70 @@
+@model List<BRM.Web.Models.QuoteRequest>
+@using BRM.Web.Models.Enums
+
+<h1 class="h3 mb-4">Demandes de devis</h1>
+
+<div class="admin-card mb-4">
+    <form method="get" class="row g-2 align-items-end">
+        <div class="col-md-5">
+            <label class="form-label small">Rechercher (nom, e-mail, n° de demande)</label>
+            <input type="text" name="recherche" value="@ViewData["Recherche"]" class="form-control" />
+        </div>
+        <div class="col-md-4">
+            <label class="form-label small">Statut</label>
+            <select name="statut" class="form-select">
+                <option value="">Tous les statuts</option>
+                @foreach (QuoteStatus statut in Enum.GetValues<QuoteStatus>())
+                {
+                    var estSelectionne = (QuoteStatus?)ViewData["StatutSelectionne"] == statut;
+                    <option value="@((int)statut)" selected="@(estSelectionne ? "selected" : null)">@statut</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-3">
+            <button type="submit" class="btn btn-brand-navy w-100">Filtrer</button>
+        </div>
+    </form>
+</div>
+
+<div class="admin-card">
+    @if (!Model.Any())
+    {
+        <p class="text-muted mb-0">Aucune demande ne correspond à ces critères.</p>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-admin align-middle">
+                <thead>
+                    <tr>
+                        <th>N°</th>
+                        <th>Client</th>
+                        <th>Ville</th>
+                        <th>Prestation</th>
+                        <th>Estimation</th>
+                        <th>Statut</th>
+                        <th>Date</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var demande in Model)
+                    {
+                        <tr>
+                            <td>@demande.NumeroDemande</td>
+                            <td>@demande.Prenom @demande.Nom</td>
+                            <td>@demande.Ville</td>
+                            <td>@demande.Service?.Nom</td>
+                            <td>@demande.EstimationBasse.ToString("N0") &ndash; @demande.EstimationHaute.ToString("N0") €</td>
+                            <td><partial name="_StatusBadge" model="demande.Statut" /></td>
+                            <td>@demande.DateCreation.ToString("dd/MM/yyyy")</td>
+                            <td>
+                                <a asp-action="Details" asp-route-id="@demande.Id" class="btn btn-sm btn-outline-secondary">Voir</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

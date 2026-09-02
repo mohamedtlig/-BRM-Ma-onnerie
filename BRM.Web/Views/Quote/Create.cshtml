@@ -1,0 +1,134 @@
+@model BRM.Web.ViewModels.Quote.QuoteRequestCreateViewModel
+@using BRM.Web.Models.Enums
+
+<section class="hero py-5">
+    <div class="container text-center">
+        <p class="hero-badge">Devis en ligne</p>
+        <h1>Demander un devis</h1>
+        <p class="lead mx-auto">
+            Décrivez votre projet, recevez une première estimation indicative. Le devis définitif sera
+            établi après visite du chantier par BRM.
+        </p>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container" style="max-width: 850px;">
+
+        <div class="disclaimer-box mb-4">
+            <i class="bi bi-info-circle me-1"></i>
+            L'estimation obtenue est indicative et ne constitue pas un devis contractuel. Le montant
+            définitif sera établi après étude du projet et visite du chantier par BRM.
+        </div>
+
+        <div class="form-card">
+            <form asp-action="Create" method="post" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <h2 class="h5 mb-3">Vos coordonnées</h2>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Prenom" class="form-label"></label>
+                        <input asp-for="Prenom" class="form-control" />
+                        <span asp-validation-for="Prenom" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Nom" class="form-label"></label>
+                        <input asp-for="Nom" class="form-control" />
+                        <span asp-validation-for="Nom" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Email" class="form-label"></label>
+                        <input asp-for="Email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Telephone" class="form-label"></label>
+                        <input asp-for="Telephone" class="form-control" />
+                        <span asp-validation-for="Telephone" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="AdresseChantier" class="form-label"></label>
+                        <input asp-for="AdresseChantier" class="form-control" />
+                        <span asp-validation-for="AdresseChantier" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label asp-for="CodePostal" class="form-label"></label>
+                        <input asp-for="CodePostal" class="form-control" />
+                        <span asp-validation-for="CodePostal" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label asp-for="Ville" class="form-label"></label>
+                        <input asp-for="Ville" class="form-control" />
+                        <span asp-validation-for="Ville" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <hr class="my-4" />
+
+                <h2 class="h5 mb-3">Votre projet</h2>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="ServiceId" class="form-label"></label>
+                        <select asp-for="ServiceId" asp-items="Model.ServicesDisponibles" class="form-select">
+                            <option value="">-- Sélectionnez un type de travaux --</option>
+                        </select>
+                        <span asp-validation-for="ServiceId" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label asp-for="Surface" class="form-label"></label>
+                        <input asp-for="Surface" class="form-control" type="number" step="0.1" min="0" />
+                        <span asp-validation-for="Surface" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label asp-for="Quantite" class="form-label"></label>
+                        <input asp-for="Quantite" class="form-control" type="number" step="0.1" min="0" />
+                        <span asp-validation-for="Quantite" class="text-danger small"></span>
+                    </div>
+                    <div class="col-12 mb-3">
+                        <label asp-for="Description" class="form-label"></label>
+                        <textarea asp-for="Description" class="form-control" rows="4" placeholder="Décrivez votre projet : nature des travaux, contraintes, objectifs..."></textarea>
+                        <span asp-validation-for="Description" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="EtatActuel" class="form-label"></label>
+                        <select asp-for="EtatActuel" asp-items="Html.GetEnumSelectList<EtatActuel>()" class="form-select"></select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="NiveauFinition" class="form-label"></label>
+                        <select asp-for="NiveauFinition" asp-items="Html.GetEnumSelectList<NiveauFinition>()" class="form-select"></select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="DelaiSouhaite" class="form-label"></label>
+                        <input asp-for="DelaiSouhaite" class="form-control" placeholder="Ex : dans les 3 mois" />
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="BudgetApproximatif" class="form-label"></label>
+                        <input asp-for="BudgetApproximatif" class="form-control" placeholder="Ex : 5 000 - 8 000 €" />
+                    </div>
+                    <div class="col-12 mb-3">
+                        <label asp-for="Photos" class="form-label"></label>
+                        <input type="file" name="Photos" class="form-control" multiple accept="image/jpeg,image/png,image/webp" />
+                        <div class="form-text">Formats acceptés : JPG, PNG, WEBP — 5 Mo maximum par photo, 8 photos maximum.</div>
+                    </div>
+                </div>
+
+                <hr class="my-4" />
+
+                <div class="form-check mb-4">
+                    <input asp-for="ConsentementRGPD" class="form-check-input" />
+                    <label asp-for="ConsentementRGPD" class="form-check-label small"></label>
+                    <span asp-validation-for="ConsentementRGPD" class="text-danger small d-block"></span>
+                </div>
+
+                <button type="submit" class="btn btn-brand-primary btn-lg">
+                    Recevoir mon estimation indicative
+                </button>
+            </form>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

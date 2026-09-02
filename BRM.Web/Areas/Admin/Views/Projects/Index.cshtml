@@ -1,0 +1,70 @@
+@model List<BRM.Web.Models.Project>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h3 mb-0">Réalisations</h1>
+    <a asp-action="Create" class="btn btn-brand-primary"><i class="bi bi-plus-lg"></i> Nouvelle réalisation</a>
+</div>
+
+@if (TempData["ProjectSaved"] != null)
+{
+    <div class="alert alert-success">@TempData["ProjectSaved"]</div>
+}
+
+<div class="admin-card">
+    @if (!Model.Any())
+    {
+        <p class="text-muted mb-0">Aucune réalisation enregistrée.</p>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-admin align-middle">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Titre</th>
+                        <th>Type</th>
+                        <th>Ville</th>
+                        <th>Date</th>
+                        <th>Statut</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var project in Model)
+                    {
+                        <tr>
+                            <td style="width:70px;">
+                                @if (!string.IsNullOrEmpty(project.PhotoPrincipale))
+                                {
+                                    <img src="@project.PhotoPrincipale" style="width:56px;height:56px;object-fit:cover;" class="rounded" alt="" />
+                                }
+                            </td>
+                            <td>@project.Titre</td>
+                            <td>@project.TypeTravaux</td>
+                            <td>@project.Ville</td>
+                            <td>@project.Date.ToString("dd/MM/yyyy")</td>
+                            <td>
+                                @if (project.Publie)
+                                {
+                                    <span class="badge bg-success">Publié</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">Brouillon</span>
+                                }
+                            </td>
+                            <td class="text-end">
+                                <a asp-action="Edit" asp-route-id="@project.Id" class="btn btn-sm btn-outline-secondary">Modifier</a>
+                                <form asp-action="Delete" asp-route-id="@project.Id" method="post" class="d-inline"
+                                      onsubmit="return confirm('Supprimer cette réalisation ?');">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">Supprimer</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

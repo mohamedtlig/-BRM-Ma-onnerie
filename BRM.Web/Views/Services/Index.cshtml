@@ -1,0 +1,58 @@
+@model List<BRM.Web.Models.Service>
+
+<section class="hero py-5">
+    <div class="container text-center">
+        <p class="hero-badge">Notre catalogue</p>
+        <h1>Nos services de maçonnerie</h1>
+        <p class="lead mx-auto">
+            BRM intervient sur l'ensemble de vos projets de maçonnerie générale à La Garde, Toulon
+            et dans le Var. Ce catalogue est géré et mis à jour par l'entreprise.
+        </p>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        @if (!Model.Any())
+        {
+            <p class="text-muted text-center">Aucun service n'est actuellement publié.</p>
+        }
+        else
+        {
+            <div class="row g-4">
+                @foreach (var service in Model)
+                {
+                    <div class="col-md-6 col-lg-4">
+                        <div class="service-card">
+                            @if (!string.IsNullOrEmpty(service.ImagePath))
+                            {
+                                <img src="@service.ImagePath" class="service-card__img" alt="@service.Nom" loading="lazy" />
+                            }
+                            else
+                            {
+                                <div class="service-card__img d-flex align-items-center justify-content-center">
+                                    <i class="bi bi-bricks fs-1 text-white-50"></i>
+                                </div>
+                            }
+                            <div class="service-card__body">
+                                <h3 class="h5">@service.Nom</h3>
+                                <p class="text-muted small mb-3">@service.Description</p>
+                                <a class="btn btn-brand-navy btn-sm" asp-controller="Quote" asp-action="Create" asp-route-serviceId="@service.Id">
+                                    Demander un devis <i class="bi bi-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</section>
+
+<section class="cta-final text-center">
+    <div class="container">
+        <h2 class="text-white mb-3">Un projet en tête ?</h2>
+        <p class="mb-4">Décrivez-nous vos travaux et recevez une première estimation indicative.</p>
+        <a class="btn btn-brand-navy btn-lg" asp-controller="Quote" asp-action="Create">Demander un devis</a>
+    </div>
+</section>

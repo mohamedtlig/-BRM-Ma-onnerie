@@ -1,0 +1,62 @@
+@model List<BRM.Web.Models.Service>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h3 mb-0">Services &amp; tarifs</h1>
+    <a asp-action="Create" class="btn btn-brand-primary"><i class="bi bi-plus-lg"></i> Nouveau service</a>
+</div>
+
+@if (TempData["ServiceSaved"] != null)
+{
+    <div class="alert alert-success">@TempData["ServiceSaved"]</div>
+}
+@if (TempData["ServiceError"] != null)
+{
+    <div class="alert alert-danger">@TempData["ServiceError"]</div>
+}
+
+<div class="admin-card">
+    <div class="table-responsive">
+        <table class="table table-admin align-middle">
+            <thead>
+                <tr>
+                    <th>Ordre</th>
+                    <th>Nom</th>
+                    <th>Unité</th>
+                    <th>Prix de base</th>
+                    <th>Prix / unité</th>
+                    <th>Statut</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var service in Model)
+                {
+                    <tr>
+                        <td>@service.Ordre</td>
+                        <td>@service.Nom</td>
+                        <td>@service.Unite</td>
+                        <td>@(service.ServicePricing?.PrixBase.ToString("N0") ?? "-") €</td>
+                        <td>@(service.ServicePricing?.PrixParUnite.ToString("N0") ?? "-") €</td>
+                        <td>
+                            @if (service.Actif)
+                            {
+                                <span class="badge bg-success">Actif</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">Inactif</span>
+                            }
+                        </td>
+                        <td class="text-end">
+                            <a asp-action="Edit" asp-route-id="@service.Id" class="btn btn-sm btn-outline-secondary">Modifier</a>
+                            <form asp-action="Delete" asp-route-id="@service.Id" method="post" class="d-inline"
+                                  onsubmit="return confirm('Supprimer ce service ?');">
+                                <button type="submit" class="btn btn-sm btn-outline-danger">Supprimer</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
