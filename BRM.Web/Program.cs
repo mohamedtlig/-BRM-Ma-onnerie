@@ -15,7 +15,7 @@ QuestPDF.Settings.License = LicenseType.Community;
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
     ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
+    options.UseNpgsql(connectionString));
 
 // Identity : uniquement un compte gérant (pas d'auto-inscription publique)
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
