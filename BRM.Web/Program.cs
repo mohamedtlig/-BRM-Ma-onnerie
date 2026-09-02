@@ -3,6 +3,7 @@ using BRM.Web.Data.Seed;
 using BRM.Web.Interfaces;
 using BRM.Web.Models;
 using BRM.Web.Services;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using QuestPDF.Infrastructure;
@@ -47,21 +48,33 @@ builder.Services.AddScoped<IFileUploadService, FileUploadService>();
 
 builder.Services.AddControllersWithViews();
 
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    // Le site tourne derrière Nginx (reverse proxy) : ces en-têtes permettent à l'appli
+    // de connaître le schéma (http/https) et l'IP réelle du visiteur.
+    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+    options.KnownProxies.Clear();
+    options.KnownNetworks.Clear();
+});
+
 var app = builder.Build();
+
+app.UseForwardedHeaders();
 
 if (app.Environment.IsDevelopment())
 {
     app.UseMigrationsEndPoint();
     app.UseDeveloperExceptionPage();
+    app.UseHttpsRedirection();
 }
 else
 {
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
+    // La redirection HTTP -> HTTPS est gérée par Nginx (reverse proxy), pas par l'application.
 }
 
 app.UseStatusCodePagesWithReExecute("/Home/StatusCodePage/{0}");
-app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 
