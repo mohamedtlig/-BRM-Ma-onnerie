@@ -54,7 +54,7 @@ builder.Services.Configure<ForwardedHeadersOptions>(options =>
     // de connaître le schéma (http/https) et l'IP réelle du visiteur.
     options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
     options.KnownProxies.Clear();
-    options.KnownNetworks.Clear();
+    options.KnownIPNetworks.Clear();
 });
 
 var app = builder.Build();
